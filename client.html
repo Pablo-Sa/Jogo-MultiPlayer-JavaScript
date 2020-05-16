@@ -35,6 +35,32 @@
 
         renderScren()
 
+        document.addEventListener('keydown', handleKeydown)
+
+        function handleKeydown(event){
+            const KeyPressed = event.key
+
+            if (KeyPressed == 'ArrowUp'){
+                console.log('Up')
+                return
+            }
+
+            if (KeyPressed == 'ArrowDown'){
+                console.log('Down')
+                return
+            }
+
+            if (KeyPressed == 'ArrowLeft'){
+                console.log('Left')
+                return
+            }
+
+            if (KeyPressed == 'ArrowRight'){
+                console.log('Right')
+                return
+            }
+        }
+
         function renderScren() {
             context.fillStyle = 'white'
             context.clearRect(0, 0, 10, 10)  
