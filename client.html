@@ -3,16 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>Meu Primeiro Jogo Multiplayer</title>
-    <style>
-        #screen {
-            border: 10px solid #CCC;
-            image-rendering: pixelated;
-            image-rendering: crisp-edges;
-            image-rendering: -moz-crisp-edges;
-            width: 400px;
-            height: 400;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="css/app.css">
 </head>
 
 <body>
@@ -26,55 +17,100 @@
         function createGame() {
             const state = {
                 players: {
-                    'player1': { x: 5, y: 5 },
-                    'player2': { x: 2, y: 8 }
                 },
-                fruits: {
-                    'fruit1': { x: 3, y: 3 }
-                }
+                fruits: {}
+            }
+        
+
+        function addPlayer(command) {
+            const playerId = command.playerId
+            const playerX = command.playerX
+            const playerY = command.playerY
+
+            state.players[playerId] = {
+                x : playerX,
+                y : playerY
             }
 
-            function movePlayer(command) {
-                console.log(`Moving ${command.playerId} with ${command.keyPressed} `)
+        }
 
-                const keyPressed = command.keyPressed
-                const player = state.players[command.playerId]
+        function removePlayer(command){
 
-                if (keyPressed == 'ArrowUp' && player.y > 0) {
-                    player.y = player.y - 1
-                    return
-                }
+            const playerId = command.playerId
+            delete state.players[playerId]
+        }
 
-                if (keyPressed == 'ArrowDown' && player.y < 9) {
-                    player.y = player.y + 1
-                    return
-                }
 
-                if (keyPressed == 'ArrowLeft' && player.x > 0) {
-                    player.x = player.x - 1
-                    return
-                }
 
-                if (keyPressed == 'ArrowRight' && player.x < 9) {
-                    player.x = player.x + 1
-                    return
-                }
 
+        const acceptedMoves = {
+            ArrowUp(player) {
+                player.y = Math.max(player.y - 1, 0)
+            },
+
+            ArrowDown(player) {
+                player.y = Math.min(player.y + 1, 9)
+            },
+
+            ArrowLeft(player) {
+                player.x = Math.max(player.x - 1, 0)
+            },
+
+            ArrowRight(player) {
+                player.x = Math.min(player.x + 1, 9)
             }
 
-            return {
-                movePlayer,
-                state
+        }
+
+
+        function movePlayer(command) {
+            console.log(`Moving ${command.playerId} with ${command.keyPressed} `)
+
+            const keyPressed = command.keyPressed
+            const player = state.players[command.playerId]
+            const moveFunction = acceptedMoves[keyPressed]
+            if (moveFunction) {
+                moveFunction(player)
             }
         }
+
+        return {
+            movePlayer,
+            state,
+            addPlayer,
+            removePlayer
+        }
+
+        }
+
 
 
         const game = createGame()
         const keyboardListener = createkeyboardListener()
+        keyboardListener.subscribe(game.movePlayer)
+
 
 
         function createkeyboardListener() {
+            const state = {
+                observers: []
+            }
+
+            function subscribe(observerFunction) {
+                state.observers.push(observerFunction)
+            }
+
+            function notifyAll(command) {
+                console.log(`Notify ${state.observers.length} Observers`)
+
+                for (const observerFunction of state.observers) {
+                    observerFunction(command)
+                }
+
+            }
+
             document.addEventListener('keydown', handleKeydown)
+
             function handleKeydown(event) {
                 const keyPressed = event.key
 
@@ -83,8 +119,12 @@
                     keyPressed
                 }
 
-                game.movePlayer(command)
+                notifyAll(command)
 
+            }
+
+            return {
+                subscribe
             }
 
 
