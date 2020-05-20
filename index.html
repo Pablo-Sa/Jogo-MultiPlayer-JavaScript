@@ -8,27 +8,16 @@
 
 <body>
     <canvas id="screen" width="10" height="10"></canvas>
-
+    <script src="/socket.io/socket.io.js"></script>
     <script type="module">
         import createkeyboardListener from './js/keyboardListener.js'
         import createGame from './js/Game.js'
         import renderScren from './js/RenderScreen.js'
 
         const screen = document.getElementById('screen')
-        const context = screen.getContext('2d')
         const currencyPlayerId = 'player1';
 
-
-
-
         const game = createGame()
-        game.addPlayer({ playerId: 'player1', playerX: 0, playerY: 0 })
-        game.addPlayer({ playerId: 'Vinícius', playerX: 2, playerY: 5 })
-        game.addPlayer({ playerId: 'João', playerX: 9, playerY: 7 })
-        game.addFruit({ fruitId: 'Fruta2', fruitX: 9, fruitY: 0 })
-        game.addFruit({ fruitId: 'Fruta1', fruitX: 7, fruitY: 0 })
-
-
 
 
         const keyboardListener = createkeyboardListener(document)
@@ -37,9 +26,18 @@
 
         renderScren(screen, game, requestAnimationFrame)
 
+        const socket = io()
 
+        socket.on('connect', () => {
+            const playerId = socket.id
+            console.log(`Player  connected on Client  with  id: ${playerId}`)
+        })
 
-
+        socket.on('setup', (state) => {
+            console.log('Receiving "setup" event from server')
+            console.log(state)
+            game.state = state
+        })
 
 
     </script>
