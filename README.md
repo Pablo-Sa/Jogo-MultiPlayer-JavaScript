@@ -44,4 +44,4 @@ trafegadas, desta forma o fluxo de informações fica o mais próximo possível 
 um protocolo TCP de tempo real, como Remote Desktop ou VNC, sobre um WebSocket.
 
 ## Express
-Express é um para o NodeJS, o mesmo cria abstrações de rota, funções middleware e etc. Neste Projeto o mesmo foi utilizado juntamente com o Socket.IO
+Express é um framework minimalista para o NodeJS, o mesmo cria abstrações de rota, funções middleware e etc. Neste Projeto o mesmo foi utilizado juntamente com o Socket.IO
