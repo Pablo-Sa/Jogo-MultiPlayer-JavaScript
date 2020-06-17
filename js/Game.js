@@ -31,6 +31,7 @@ export default function createGame() {
         Object.assign(state, newState)
     }
 
+
     function addPlayer(command) {
         const playerId = command.playerId
         const playerX = 'playerX' in command ? command.playerX : Math.floor(Math.random() * state.screen.width)
@@ -93,27 +94,28 @@ export default function createGame() {
 
     }
 
-    const acceptedMoves = {
-        ArrowUp(player) {
-            player.y = Math.max(player.y - 1, 0)
-        },
-
-        ArrowDown(player) {
-            player.y = Math.min(player.y + 1, state.screen.height)
-        },
-
-        ArrowLeft(player) {
-            player.x = Math.max(player.x - 1, 0)
-        },
-
-        ArrowRight(player) {
-            player.x = Math.min(player.x + 1, state.screen.width)
-        }
-
-    }
-
-
+    
     function movePlayer(command) {
+        notifyAll(command)
+        
+        const acceptedMoves = {
+            ArrowUp(player) {
+                player.y = Math.max(player.y - 1, 0)
+            },
+    
+            ArrowDown(player) {
+                player.y = Math.min(player.y + 1, state.screen.height)
+            },
+    
+            ArrowLeft(player) {
+                player.x = Math.max(player.x - 1, 0)
+            },
+    
+            ArrowRight(player) {
+                player.x = Math.min(player.x + 1, state.screen.width)
+            }
+    
+        }
 
         const keyPressed = command.keyPressed
         const playerId = command.playerId
@@ -125,7 +127,7 @@ export default function createGame() {
             checkForFruitCollision(playerId)
         }
     }
-
+  
     function checkForFruitCollision(playerId) {
 
         const player = state.players[playerId]
