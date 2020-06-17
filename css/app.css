@@ -1,8 +1,23 @@
+body {
+    margin: 40px 0 0 0;
+    padding: 0;
+    background-color: #EEE;
+    text-align: center;
+}
+
 #screen {
-    border: 10px solid #CCC;
+    border: 1px solid #CCC;
     image-rendering: pixelated;
     image-rendering: crisp-edges;
     image-rendering: -moz-crisp-edges;
     width: 400px;
-    height: 400;
+    height: 400px;
+    -webkit-box-shadow: 0px 4px 17px 0px rgba(0,0,0,0.19);
+    -moz-box-shadow: 0px 4px 17px 0px rgba(0,0,0,0.19);
+    box-shadow: 0px 4px 17px 0px rgba(0,0,0,0.19);
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    display: inline-block;
+    vertical-align: top;
 }
