@@ -21,8 +21,6 @@
 
 
         const keyboardListener = createkeyboardListener(document)
-        keyboardListener.subscribe(game.movePlayer)
-
 
         renderScren(screen, game, requestAnimationFrame)
 
@@ -34,11 +32,32 @@
         })
 
         socket.on('setup', (state) => {
-            console.log('Receiving "setup" event from server')
-            console.log(state)
-            game.state = state
+            const playerId = socket.id
+            game.setNewState(state)
+
+            keyboardListener.subscribe(game.movePlayer)
+            keyboardListener.registerPlayerId(playerId)
         })
 
+        socket.on('add-player', (command) => {
+            console.log('New Player Add event from server')
+            game.addPlayer(command)
+        })
+
+        socket.on('remove-player', (command) => {
+            console.log('Remove Player event from server')
+            game.removePlayer(command)
+        })
+
+        socket.on('add-fruit', (command) => {
+            console.log('New Fruit Add event from server')
+            game.addFruit(command)
+        })
+
+        socket.on('remove-fruit', (command) => {
+            console.log('Remove Fruits event from server')
+            game.removeFruit(command)
+        })
 
     </script>
 </body>
